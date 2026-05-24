@@ -4,7 +4,9 @@ import { notFound } from "next/navigation";
 import {
   ArrowLeft,
   CheckCircle2,
+  ChevronDown,
   Clock,
+  GraduationCap,
   Medal,
   PlayCircle,
 } from "lucide-react";
@@ -155,8 +157,8 @@ export default async function ConcursoDetalhePage({
         </div>
       </section>
 
-      {/* DISCIPLINAS */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 mt-10 space-y-10">
+      {/* DISCIPLINAS — accordion */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 mt-10 space-y-3">
         {!vinculos?.length ? (
           <EmptyState
             icon={<Medal size={24} />}
@@ -164,7 +166,7 @@ export default async function ConcursoDetalhePage({
             description="O coordenador ainda não selecionou as disciplinas deste concurso."
           />
         ) : (
-          vinculos.map((v) => {
+          vinculos.map((v, idx) => {
             const disc = (
               v as {
                 tuba_disciplinas?: { id: string; nome: string; cor: string };
@@ -174,69 +176,94 @@ export default async function ConcursoDetalhePage({
             const aulasDisc = aulasPorDisc.get(disc.id) ?? [];
             const assistDisc = aulasDisc.filter((a) => assistidasSet.has(a.id)).length;
             const pct = aulasDisc.length > 0 ? (assistDisc / aulasDisc.length) * 100 : 0;
+            const completo = aulasDisc.length > 0 && assistDisc === aulasDisc.length;
 
             return (
-              <section key={disc.id}>
-                <header className="mb-4 flex items-end justify-between gap-4">
-                  <div>
-                    <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-[--foreground]">
-                      {disc.nome}
-                    </h2>
-                    <p className="text-xs text-[--foreground-muted]">
-                      {aulasDisc.length} {aulasDisc.length === 1 ? "aula" : "aulas"} · {assistDisc} assistidas
+              <details
+                key={disc.id}
+                open={idx === 0}
+                className="group rounded-2xl border border-[--border] bg-[--surface]/40 backdrop-blur-sm overflow-hidden transition-colors open:border-[--primary]/30"
+              >
+                <summary className="list-none cursor-pointer select-none px-5 py-4 flex items-center gap-4 hover:bg-[--surface-2]/40 transition-colors">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-[--primary] bg-[--primary]/15 group-open:gold-gradient group-open:text-[--primary-foreground] transition-colors">
+                    <GraduationCap size={20} />
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <h2 className="font-[family-name:var(--font-playfair)] text-lg sm:text-xl text-[--foreground] truncate">
+                        {disc.nome}
+                      </h2>
+                      {completo ? (
+                        <Badge variant="success">
+                          <CheckCircle2 size={12} /> Concluída
+                        </Badge>
+                      ) : null}
+                    </div>
+                    <p className="text-xs text-[--foreground-muted] mt-0.5">
+                      {aulasDisc.length} {aulasDisc.length === 1 ? "aula" : "aulas"} · {assistDisc} assistida{assistDisc === 1 ? "" : "s"}
                     </p>
                   </div>
-                  <div className="hidden sm:block w-48">
+                  <div className="hidden sm:block w-40">
                     <Progress value={pct} />
                   </div>
-                </header>
+                  <ChevronDown
+                    size={20}
+                    className="text-[--foreground-muted] transition-transform duration-300 group-open:rotate-180 shrink-0"
+                  />
+                </summary>
 
-                {aulasDisc.length === 0 ? (
-                  <Card className="p-8 text-center text-sm text-[--foreground-muted]">
-                    Nenhuma aula publicada nesta disciplina ainda.
-                  </Card>
-                ) : (
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {aulasDisc.map((aula) => {
-                      const assistida = assistidasSet.has(aula.id);
-                      return (
-                        <Link
-                          key={aula.id}
-                          href={`/app/aulas/${aula.id}`}
-                          prefetch
-                          className="group"
-                        >
-                          <Card className="h-full p-5 transition-transform group-hover:-translate-y-1">
-                            <div className="mb-3 flex items-start justify-between">
-                              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[--primary]/15 text-[--primary] group-hover:bg-[--primary] group-hover:text-[--primary-foreground] transition-colors">
-                                <PlayCircle size={18} />
-                              </span>
-                              {assistida ? (
-                                <Badge variant="success">
-                                  <CheckCircle2 size={12} /> Assistida
-                                </Badge>
-                              ) : null}
-                            </div>
-                            <h3 className="text-base font-semibold text-[--foreground] line-clamp-2">
-                              {aula.titulo}
-                            </h3>
-                            {aula.descricao ? (
-                              <p className="mt-1 text-xs text-[--foreground-muted] line-clamp-2">
-                                {aula.descricao}
-                              </p>
-                            ) : null}
-                            {aula.duracao_min ? (
-                              <div className="mt-3 inline-flex items-center gap-1 text-xs text-[--foreground-muted]">
-                                <Clock size={12} /> {aula.duracao_min} min
-                              </div>
-                            ) : null}
-                          </Card>
-                        </Link>
-                      );
-                    })}
+                <div className="px-5 pb-5 pt-1 border-t border-[--border]/60">
+                  <div className="sm:hidden mb-4 pt-3">
+                    <Progress value={pct} />
                   </div>
-                )}
-              </section>
+
+                  {aulasDisc.length === 0 ? (
+                    <p className="py-6 text-center text-sm text-[--foreground-muted]">
+                      Nenhuma aula publicada nesta disciplina ainda.
+                    </p>
+                  ) : (
+                    <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-3">
+                      {aulasDisc.map((aula) => {
+                        const assistida = assistidasSet.has(aula.id);
+                        return (
+                          <Link
+                            key={aula.id}
+                            href={`/app/aulas/${aula.id}`}
+                            prefetch
+                            className="group/aula"
+                          >
+                            <Card className="h-full p-5 transition-transform group-hover/aula:-translate-y-1">
+                              <div className="mb-3 flex items-start justify-between">
+                                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[--primary]/15 text-[--primary] group-hover/aula:bg-[--primary] group-hover/aula:text-[--primary-foreground] transition-colors">
+                                  <PlayCircle size={18} />
+                                </span>
+                                {assistida ? (
+                                  <Badge variant="success">
+                                    <CheckCircle2 size={12} /> Assistida
+                                  </Badge>
+                                ) : null}
+                              </div>
+                              <h3 className="text-base font-semibold text-[--foreground] line-clamp-2">
+                                {aula.titulo}
+                              </h3>
+                              {aula.descricao ? (
+                                <p className="mt-1 text-xs text-[--foreground-muted] line-clamp-2">
+                                  {aula.descricao}
+                                </p>
+                              ) : null}
+                              {aula.duracao_min ? (
+                                <div className="mt-3 inline-flex items-center gap-1 text-xs text-[--foreground-muted]">
+                                  <Clock size={12} /> {aula.duracao_min} min
+                                </div>
+                              ) : null}
+                            </Card>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </details>
             );
           })
         )}
