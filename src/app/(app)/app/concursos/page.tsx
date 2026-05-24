@@ -71,12 +71,7 @@ function CardConcurso({ c }: { c: TubaVitrineConcursoRow }) {
           <p className="font-[family-name:var(--font-playfair)] text-lg text-[--foreground] truncate">
             {c.nome}
           </p>
-          <p className="text-xs text-[--foreground-muted] truncate">
-            {c.banca ? `${c.banca}` : ""}
-            {c.banca && c.ano ? " · " : ""}
-            {c.ano ? c.ano : ""}
-          </p>
-          <p className="text-xs text-[--foreground-muted] mt-1">
+          <p className="text-xs text-[--foreground-muted]">
             {Number(c.total_disciplinas)} disciplina
             {Number(c.total_disciplinas) === 1 ? "" : "s"} · {Number(c.total_aulas)} aula
             {Number(c.total_aulas) === 1 ? "" : "s"}

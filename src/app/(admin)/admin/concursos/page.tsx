@@ -83,11 +83,6 @@ export default async function ConcursosAdminPage() {
                     <p className="font-[family-name:var(--font-playfair)] text-lg text-[--foreground] truncate">
                       {c.nome}
                     </p>
-                    <p className="text-xs text-[--foreground-muted]">
-                      {c.banca ? `${c.banca}` : ""}
-                      {c.banca && c.ano ? " · " : ""}
-                      {c.ano ? c.ano : ""}
-                    </p>
                     <p className="text-xs text-[--foreground-muted] mt-auto pt-2">
                       {qtdDisc} disciplina{qtdDisc === 1 ? "" : "s"}
                     </p>
