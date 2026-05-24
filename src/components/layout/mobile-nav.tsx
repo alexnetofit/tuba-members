@@ -2,16 +2,16 @@
 
 import {
   LayoutDashboard,
-  GraduationCap,
   ClipboardCheck,
   Trophy,
   User,
+  Medal,
 } from "lucide-react";
 import { NavLink } from "./nav-link";
 
 const items = [
   { href: "/app", label: "Início", icon: LayoutDashboard, exact: true },
-  { href: "/app/aulas", label: "Aulas", icon: GraduationCap },
+  { href: "/app/concursos", label: "Concursos", icon: Medal },
   { href: "/app/simulados", label: "Simulados", icon: ClipboardCheck },
   { href: "/app/ranking", label: "Ranking", icon: Trophy },
   { href: "/app/perfil", label: "Perfil", icon: User },

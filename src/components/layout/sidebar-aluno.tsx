@@ -9,6 +9,7 @@ import {
   User,
   LogOut,
   Settings,
+  Medal,
 } from "lucide-react";
 import { Logo } from "@/components/marca/logo";
 import { Avatar } from "@/components/ui/avatar";
@@ -22,6 +23,7 @@ interface Props {
 
 const items = [
   { href: "/app", label: "Início", icon: LayoutDashboard, exact: true },
+  { href: "/app/concursos", label: "Concursos", icon: Medal },
   { href: "/app/aulas", label: "Aulas", icon: GraduationCap },
   { href: "/app/simulados", label: "Simulados", icon: ClipboardCheck },
   { href: "/app/ranking", label: "Ranking", icon: Trophy },

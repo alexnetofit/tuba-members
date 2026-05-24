@@ -129,6 +129,43 @@ export type TubaRankingGeralRow = {
   posicao: number;
 };
 
+export type TubaConcurso = {
+  id: string;
+  nome: string;
+  slug: string;
+  descricao: string | null;
+  banca: string | null;
+  ano: number | null;
+  capa_url: string | null;
+  cor: string;
+  ordem: number;
+  publicado: boolean;
+  acesso_livre: boolean;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type TubaConcursoDisciplina = {
+  concurso_id: string;
+  disciplina_id: string;
+  ordem: number;
+};
+
+export type TubaVitrineConcursoRow = {
+  id: string;
+  nome: string;
+  slug: string;
+  descricao: string | null;
+  banca: string | null;
+  ano: number | null;
+  capa_url: string | null;
+  cor: string;
+  ordem: number;
+  total_disciplinas: number;
+  total_aulas: number;
+};
+
 export type TubaRankingDisciplinaRow = {
   user_id: string;
   full_name: string | null;
@@ -263,6 +300,33 @@ export type Database = {
           },
         ];
       };
+      tuba_concursos: {
+        Row: TubaConcurso;
+        Insert: Partial<TubaConcurso> & Pick<TubaConcurso, "nome" | "slug">;
+        Update: Partial<TubaConcurso>;
+        Relationships: [];
+      };
+      tuba_concurso_disciplinas: {
+        Row: TubaConcursoDisciplina;
+        Insert: TubaConcursoDisciplina;
+        Update: Partial<TubaConcursoDisciplina>;
+        Relationships: [
+          {
+            foreignKeyName: "tuba_concurso_disciplinas_concurso_id_fkey";
+            columns: ["concurso_id"];
+            isOneToOne: false;
+            referencedRelation: "tuba_concursos";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tuba_concurso_disciplinas_disciplina_id_fkey";
+            columns: ["disciplina_id"];
+            isOneToOne: false;
+            referencedRelation: "tuba_disciplinas";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       tuba_ranking_geral: {
@@ -289,6 +353,10 @@ export type Database = {
           total_aulas: number;
           assistidas: number;
         }>;
+      };
+      tuba_vitrine_concursos: {
+        Args: { p_user_id: string };
+        Returns: TubaVitrineConcursoRow[];
       };
     };
     Enums: Record<string, never>;

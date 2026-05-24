@@ -3,11 +3,14 @@
 -- disciplinas iniciais + storage buckets + policies
 -- ============================================================
 
--- Disciplinas do flyer
+-- Disciplinas iniciais (matérias do concurso militar)
 insert into public.tuba_disciplinas (nome, slug, cor, icone, ordem) values
-  ('Português e Redação', 'portugues-redacao', '#e6b35a', 'PenLine', 1),
-  ('Legislação', 'legislacao', '#d4a44a', 'Scale', 2),
-  ('Administração', 'administracao', '#f0c674', 'TrendingUp', 3)
+  ('Português',                 'portugues',                '#d4a44a', 'BookOpen',   1),
+  ('Inglês',                    'ingles',                   '#c89234', 'Languages',  2),
+  ('Matemática',                'matematica',               '#b58220', 'Calculator', 3),
+  ('Física',                    'fisica',                   '#a67410', 'Atom',       4),
+  ('Legislação Militar',        'legislacao-militar',       '#a67410', 'Shield',     5),
+  ('Serviços Administrativos',  'servicos-administrativos', '#8b5e0a', 'Briefcase',  6)
 on conflict (slug) do nothing;
 
 -- Storage buckets

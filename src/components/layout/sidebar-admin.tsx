@@ -10,6 +10,7 @@ import {
   ArrowLeft,
   LogOut,
   Trophy,
+  Medal,
 } from "lucide-react";
 import { Logo } from "@/components/marca/logo";
 import { Avatar } from "@/components/ui/avatar";
@@ -24,6 +25,7 @@ interface Props {
 const items = [
   { href: "/admin", label: "Visão geral", icon: LayoutDashboard, exact: true },
   { href: "/admin/alunos", label: "Alunos", icon: Users },
+  { href: "/admin/concursos", label: "Concursos", icon: Medal },
   { href: "/admin/disciplinas", label: "Disciplinas", icon: BookMarked },
   { href: "/admin/aulas", label: "Aulas", icon: GraduationCap },
   { href: "/admin/simulados", label: "Simulados", icon: ClipboardCheck },
