@@ -85,33 +85,20 @@ export default async function ConcursoDetalhePage({
     <div className="-mx-4 sm:-mx-6 lg:-mx-10 -mt-8 lg:-mt-12 pb-8">
       {/* HERO */}
       <section className="relative min-h-[50vh] flex items-end overflow-hidden">
-        {concurso.capa_url ? (
-          <>
-            <Image
-              src={concurso.capa_url}
-              alt={concurso.nome}
-              fill
-              sizes="100vw"
-              priority
-              unoptimized
-              className="object-cover object-top scale-105 blur-[2px] opacity-80"
-            />
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(to top, rgba(7,16,32,1) 0%, rgba(7,16,32,0.85) 35%, rgba(7,16,32,0.4) 80%, rgba(7,16,32,0.1) 100%)",
-              }}
-            />
-          </>
-        ) : (
-          <div
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(135deg, ${concurso.cor} 0%, #07101e 100%)`,
-            }}
-          />
-        )}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `radial-gradient(120% 80% at 20% 20%, ${concurso.cor}55 0%, transparent 60%), linear-gradient(135deg, #0a1d3a 0%, #07101e 100%)`,
+          }}
+        />
+        <div
+          className="absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)",
+            backgroundSize: "24px 24px",
+          }}
+        />
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 pb-10 pt-24">
           <Link

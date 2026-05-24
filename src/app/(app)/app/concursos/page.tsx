@@ -42,33 +42,20 @@ export default async function ConcursosVitrine() {
 function Hero({ c }: { c: TubaVitrineConcursoRow }) {
   return (
     <section className="relative min-h-[58vh] sm:min-h-[64vh] flex items-end overflow-hidden">
-      {c.capa_url ? (
-        <>
-          <Image
-            src={c.capa_url}
-            alt={c.nome}
-            fill
-            sizes="100vw"
-            priority
-            unoptimized
-            className="object-cover object-top scale-105 blur-[2px] opacity-80"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to top, rgba(7,16,32,1) 0%, rgba(7,16,32,0.85) 35%, rgba(7,16,32,0.4) 70%, rgba(7,16,32,0.1) 100%)",
-            }}
-          />
-        </>
-      ) : (
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(135deg, ${c.cor} 0%, #07101e 100%)`,
-          }}
-        />
-      )}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `radial-gradient(120% 80% at 20% 20%, ${c.cor}55 0%, transparent 60%), linear-gradient(135deg, #0a1d3a 0%, #07101e 100%)`,
+        }}
+      />
+      <div
+        className="absolute inset-0 opacity-[0.06]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)",
+          backgroundSize: "24px 24px",
+        }}
+      />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 pb-12 pt-32">
         <div className="grid items-end gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">
