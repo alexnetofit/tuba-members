@@ -1,9 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { createClient, createAdminClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/auth/get-user";
+import type { TubaConcurso } from "@/lib/supabase/types";
+
+export type ConcursoActionResult =
+  | { ok: true; id: string }
+  | { ok?: false; error: string };
 
 const BUCKET_CAPAS = "tuba-concursos-capas";
 
@@ -48,7 +52,7 @@ async function removerCapaSeForDoBucket(url: string | null) {
   await admin.storage.from(BUCKET_CAPAS).remove([path]);
 }
 
-export async function criarConcurso(formData: FormData) {
+export async function criarConcurso(formData: FormData): Promise<ConcursoActionResult> {
   const { authId } = await requireAdmin();
   const nome = String(formData.get("nome") ?? "").trim();
   const descricao = String(formData.get("descricao") ?? "").trim() || null;
@@ -100,10 +104,10 @@ export async function criarConcurso(formData: FormData) {
 
   revalidatePath("/admin/concursos");
   revalidatePath("/app/concursos");
-  redirect(`/admin/concursos/${novo.id}`);
+  return { ok: true, id: novo.id };
 }
 
-export async function atualizarConcurso(formData: FormData) {
+export async function atualizarConcurso(formData: FormData): Promise<ConcursoActionResult> {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");
   if (!id) return { error: "ID ausente." };
@@ -139,7 +143,7 @@ export async function atualizarConcurso(formData: FormData) {
     capa_url = null;
   }
 
-  const update: Record<string, unknown> = {
+  const update: Partial<TubaConcurso> = {
     nome,
     descricao,
     banca,
@@ -166,7 +170,7 @@ export async function atualizarConcurso(formData: FormData) {
   revalidatePath("/admin/concursos");
   revalidatePath(`/admin/concursos/${id}`);
   revalidatePath("/app/concursos");
-  return { ok: true };
+  return { ok: true, id };
 }
 
 export async function togglePublicarConcurso(id: string) {

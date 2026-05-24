@@ -78,8 +78,14 @@ export function ConcursoForm({ modo, concurso, disciplinas, vinculos = [] }: Pro
     startTransition(async () => {
       const action = modo === "novo" ? criarConcurso : atualizarConcurso;
       const res = await action(fd);
-      if (res?.error) toast.error(res.error);
-      else if (res?.ok) {
+      if (!res.ok) {
+        toast.error(res.error);
+        return;
+      }
+      if (modo === "novo") {
+        toast.success("Concurso criado.");
+        router.push(`/admin/concursos/${res.id}`);
+      } else {
         toast.success("Concurso atualizado.");
         router.refresh();
       }

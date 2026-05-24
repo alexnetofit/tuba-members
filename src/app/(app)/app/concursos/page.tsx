@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronRight, Lock, Medal, Sparkles } from "lucide-react";
+import { ChevronRight, Medal, Sparkles } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth/get-user";
 import { createClient } from "@/lib/supabase/server";
 import { Card } from "@/components/ui/card";
@@ -210,16 +210,10 @@ function CardConcurso({ c }: { c: TubaVitrineConcursoRow }) {
             </p>
           </div>
         </div>
-        <div className="p-3 flex items-center justify-between gap-2 text-xs text-[--foreground-muted]">
+        <div className="p-3 text-xs text-[--foreground-muted]">
           <span>
             {Number(c.total_disciplinas)} disc · {Number(c.total_aulas)} aulas
           </span>
-          <Lock
-            size={12}
-            className="opacity-0"
-            aria-hidden
-            title=""
-          />
         </div>
       </Card>
     </Link>
